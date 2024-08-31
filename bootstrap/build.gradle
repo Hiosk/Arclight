@@ -199,11 +199,11 @@ tasks.register('fabricJar', Jar) {
     manifest.attributes 'Implementation-Vendor': 'Arclight Team'
     manifest.attributes 'Implementation-Timestamp': new Date().format("yyyy-MM-dd HH:mm:ss")
     manifest.attributes 'Automatic-Module-Name': 'arclight.boot'
-    from(configurations.embedFabric.collect { it.isDirectory() ? it : zipTree(it) })
+    /*from(configurations.embedFabric.collect { it.isDirectory() ? it : zipTree(it) })
     into('/') {
         it.from(project(':arclight-fabric').tasks.reobfJar.outputs.files.collect())
         it.rename { name -> 'common.jar' }
-    }
+    }*/
     into('/') {
         it.from(configurations.gson.collect())
         it.rename { name -> 'gson.jar' }
