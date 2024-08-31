@@ -16,6 +16,6 @@ include 'arclight-common'
 
 include 'arclight-forge'
 include 'arclight-neoforge'
-include 'arclight-fabric'
+//include 'arclight-fabric'
 
 include 'bootstrap'
