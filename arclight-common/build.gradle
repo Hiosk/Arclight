@@ -27,7 +27,7 @@ arclight {
 dependencies {
     minecraft "com.mojang:minecraft:$minecraftVersion"
     mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:$fabricLoaderVersion"
+    //modImplementation "net.fabricmc:fabric-loader:$fabricLoaderVersion"
 
     compileOnly "io.izzel.arclight.generated:spigot:${minecraftVersion}:deobf"
 
