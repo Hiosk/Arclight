@@ -191,7 +191,7 @@ tasks.register('neoforgeJar', Jar) {
     dependsOn(project(':arclight-neoforge').tasks.reobfJar)
 }
 
-tasks.register('fabricJar', Jar) {
+/*tasks.register('fabricJar', Jar) {
     archiveBaseName.set 'arclight-fabric-' + minecraftVersion
     manifest.attributes 'Main-Class': 'io.izzel.arclight.server.Launcher'
     manifest.attributes 'Implementation-Title': 'Arclight'
@@ -199,11 +199,11 @@ tasks.register('fabricJar', Jar) {
     manifest.attributes 'Implementation-Vendor': 'Arclight Team'
     manifest.attributes 'Implementation-Timestamp': new Date().format("yyyy-MM-dd HH:mm:ss")
     manifest.attributes 'Automatic-Module-Name': 'arclight.boot'
-    /*from(configurations.embedFabric.collect { it.isDirectory() ? it : zipTree(it) })
+    from(configurations.embedFabric.collect { it.isDirectory() ? it : zipTree(it) })
     into('/') {
         it.from(project(':arclight-fabric').tasks.reobfJar.outputs.files.collect())
         it.rename { name -> 'common.jar' }
-    }*/
+    }
     into('/') {
         it.from(configurations.gson.collect())
         it.rename { name -> 'gson.jar' }
@@ -213,12 +213,13 @@ tasks.register('fabricJar', Jar) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     dependsOn(project(':arclight-fabric').tasks.reobfJar)
 }
+*/
 
 tasks.register("generateInstallerInfo", GenerateInstallerInfo) {
     forgeVersion = rootProject.ext.forgeVersion
     neoforgeVersion = rootProject.ext.neoForgeVersion
     minecraftVersion = rootProject.ext.minecraftVersion
-    fabricLoaderVersion = rootProject.ext.fabricLoaderVersion
+    //fabricLoaderVersion = rootProject.ext.fabricLoaderVersion
     def installer = file("build/arclight_installer/META-INF/installer.json")
     outputs.file(installer)
     configuration = project.configurations.installer
@@ -296,7 +297,7 @@ tasks.register('runProdNeoforge', JavaExec) {
     dependsOn project.tasks.neoforgeJar
 }
 
-tasks.register('runProdFabric', JavaExec) {
+/*tasks.register('runProdFabric', JavaExec) {
     classpath = files(tasks.fabricJar)
     // systemProperties 'bsl.debug': 'true'
     systemProperties 'terminal.ansi': 'true'
@@ -314,7 +315,7 @@ tasks.register('runProdFabric', JavaExec) {
         languageVersion = JavaLanguageVersion.of(21)
     })
     dependsOn project.tasks.fabricJar
-}
+}*/
 
 publishing {
     repositories {
