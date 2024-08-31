@@ -13,8 +13,8 @@ import java.nio.file.Files
 
 class GenerateInstallerInfo extends DefaultTask {
 
-    private String minecraftVersion, forgeVersion, neoforgeVersion, fabricLoaderVersion
-    private Configuration configuration, fabricExtra
+    private String minecraftVersion, forgeVersion, neoforgeVersion//, fabricLoaderVersion
+    private Configuration configuration//, fabricExtra
 
     @Classpath
     Configuration getConfiguration() {
@@ -25,14 +25,14 @@ class GenerateInstallerInfo extends DefaultTask {
         this.configuration = configuration
     }
 
-    @Classpath
+    /*@Classpath
     Configuration getFabricExtra() {
         return fabricExtra
-    }
+    }*/
 
-    void setFabricExtra(Configuration fabricExtra) {
+    /*void setFabricExtra(Configuration fabricExtra) {
         this.fabricExtra = fabricExtra
-    }
+    }*/
 
     @Input
     String getMinecraftVersion() {
@@ -61,14 +61,14 @@ class GenerateInstallerInfo extends DefaultTask {
         this.neoforgeVersion = neoforgeVersion
     }
 
-    @Input
+    /*@Input
     String getFabricLoaderVersion() {
         return fabricLoaderVersion
     }
 
     void setFabricLoaderVersion(String fabricLoaderVersion) {
         this.fabricLoaderVersion = fabricLoaderVersion
-    }
+    }*/
 
     private static List<String> configurationDeps(Configuration conf) {
         return conf.dependencies.collect { dep ->
@@ -91,7 +91,7 @@ class GenerateInstallerInfo extends DefaultTask {
     @TaskAction
     void run() {
         def libs = configurationDeps(this.configuration)
-        def fabricLibs = configurationDeps(this.fabricExtra)
+        //def fabricLibs = configurationDeps(this.fabricExtra)
         def artifacts = { List<String> arts ->
             def ret = new HashMap<String, String>()
             def cfg = project.configurations.create("art_rev_" + System.currentTimeMillis())
@@ -125,9 +125,9 @@ class GenerateInstallerInfo extends DefaultTask {
         def neoforgeUrl = "https://maven.neoforged.net/releases/net/neoforged/neoforge/$neoforgeVersion/neoforge-$neoforgeVersion-installer.jar"
         def tmpNeoforge = Files.createTempFile("neoforge", "jar")
         Utils.download(neoforgeUrl, tmpNeoforge.toFile())
-        def fabricLoaderUrl = "https://maven.fabricmc.net/net/fabricmc/fabric-loader/$fabricLoaderVersion/fabric-loader-${fabricLoaderVersion}.jar"
+        //def fabricLoaderUrl = "https://maven.fabricmc.net/net/fabricmc/fabric-loader/$fabricLoaderVersion/fabric-loader-${fabricLoaderVersion}.jar"
         def tmpFabric = Files.createTempFile("fabric", "jar")
-        Utils.download(fabricLoaderUrl, tmpFabric.toFile())
+        //Utils.download(fabricLoaderUrl, tmpFabric.toFile())
         def output = [
                 installer  : [
                         minecraft       : minecraftVersion,
@@ -135,11 +135,11 @@ class GenerateInstallerInfo extends DefaultTask {
                         forgeHash       : Utils.sha1(tmpInstaller.toFile()),
                         neoforge        : neoforgeVersion,
                         neoforgeHash    : Utils.sha1(tmpNeoforge.toFile()),
-                        fabricLoader    : fabricLoaderVersion,
+                        //fabricLoader    : fabricLoaderVersion,
                         fabricLoaderHash: Utils.sha1(tmpFabric.toFile()),
                 ],
                 libraries  : artifacts(libs),
-                fabricExtra: artifacts(fabricLibs)
+                //fabricExtra: artifacts(fabricLibs)
         ]
         outputs.files.singleFile.text = JsonOutput.toJson(output)
     }

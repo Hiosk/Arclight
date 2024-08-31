@@ -36,7 +36,7 @@ dependencies {
 
     implementation ("io.izzel.arclight:mixin-tools:$mixinToolsVersion") { transitive = false }
     annotationProcessor ("io.izzel.arclight:mixin-tools:$mixinToolsVersion") { transitive = false }
-
+    implementation 'org.spongepowered:mixin:0.8.5'
     implementation 'jline:jline:2.12.1'
     implementation 'net.minecrell:terminalconsoleappender:1.2.0'
     implementation 'net.md-5:SpecialSource:1.11.3'
