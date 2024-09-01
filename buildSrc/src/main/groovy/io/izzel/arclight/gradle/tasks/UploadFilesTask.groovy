@@ -48,23 +48,24 @@ abstract class UploadFilesTask extends DefaultTask {
         def sha1 = Utils.sha1(file)
         def modloader = file.name.split('-')[1]
         project.logger.lifecycle("Uploading {}, sha1 {}", file.name, sha1)
-        (new URL(OBJECTS.formatted(sha1)).openConnection() as HttpURLConnection).with {
-            it.setRequestMethod("PUT")
-            it.doOutput = true
-            it.addRequestProperty("X-Lightning-Sha1", sha1)
-            it.addRequestProperty("X-Lightning-Filename", file.name.replace(".jar", "-" + gitHash.get() + ".jar"))
-            it.addRequestProperty("AuthToken", System.getenv().ARCLIGHT_FILES_TOKEN)
-            it.addRequestProperty("Content-Type", "application/java-archive")
-            it.addRequestProperty("Content-Length", Files.size(file.toPath()).toString())
-            it.setInstanceFollowRedirects(true)
-            it.connect()
-            Utils.using(it.outputStream) {
-                Files.copy(file.toPath(), it)
-            }
-            if (it.responseCode != 200) {
-                def reason = new String(it.inputStream.readAllBytes())
-                project.logger.error(reason)
-                throw new Exception(reason)
+        if(file.name.contains("neoforge")) {
+            (new URL(OBJECTS.formatted(sha1)).openConnection() as HttpURLConnection).with {
+                it.setRequestMethod("PUT")
+                it.doOutput = true
+                it.addRequestProperty("X-Lightning-Sha1", sha1)
+                it.addRequestProperty("X-Lightning-Filename", file.name.replace(".jar", "-" + gitHash.get() + ".jar"))
+                it.addRequestProperty("Content-Type", "application/java-archive")
+                it.addRequestProperty("Content-Length", Files.size(file.toPath()).toString())
+                it.setInstanceFollowRedirects(true)
+                it.connect()
+                Utils.using(it.outputStream) {
+                    Files.copy(file.toPath(), it)
+                }
+                if (it.responseCode != 200) {
+                    def reason = new String(it.inputStream.readAllBytes())
+                    project.logger.error(reason)
+                    throw new Exception(reason)
+                }
             }
         }
         link("/arclight/branches/${branch.get()}/versions-snapshot/${version.get()}/${modloader}", [type: 'object', value: sha1])
