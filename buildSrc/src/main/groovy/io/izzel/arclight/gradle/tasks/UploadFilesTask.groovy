@@ -32,7 +32,7 @@ abstract class UploadFilesTask extends DefaultTask {
         for (def file in inputs.files.asFileTree.files) {
             if (file.isFile()) {
                 try {
-                    this.uploadOne(file)
+                    //this.uploadOne(file)
                 } catch (Exception e) {
                     project.logger.error("Error uploading $file", e)
                     throw e
