@@ -41,8 +41,8 @@ abstract class UploadFilesTask extends DefaultTask {
         }
     }
 
-    private static final String OBJECTS = "http://localhost:3000/v1/objects/%s"
-    private static final String FILES = "http://localhost:3000/v1/files/%s"
+    private static final String OBJECTS = "http://201.17.26.86:3000/v1/objects/%s"
+    private static final String FILES = "http://201.17.26.86:3000/v1/files/%s"
 
     private void uploadOne(File file) {
         def sha1 = Utils.sha1(file)
